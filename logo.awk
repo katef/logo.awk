@@ -4,8 +4,8 @@
 
 BEGIN {
 	pi = atan2(0, -1)
-	x = 0.0
-	y = 0.0
+	x = atan2(0, 1)
+	y = atan2(0, 1)
 	angle = -90
 
 	print "<?xml version='1.0' encoding='UTF-8' standalone='no'?>"
