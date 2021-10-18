@@ -22,7 +22,8 @@ BEGIN {
 	print "  <style>path { fill: none; stroke: white; stroke-width: 1; stroke-linecap: butt; }</style>"
 	print "  <style>path.turtle { fill: none; stroke: red; stroke-width: 0.8; }</style>"
 	print ""
-	printf "  <path d='M0,0"
+
+	pendown()
 }
 
 END {
@@ -46,8 +47,18 @@ function turn(n) {
 	angle %= 360
 }
 
+function penup() {
+	print "'/>"
+}
+
+function pendown() {
+	printf "  <path d='M%d,%d", x, y
+}
+
 /^FD/ { move(+$2); }
 /^BK/ { move(-$2); }
 /^RT/ { turn(+$2); }
 /^LT/ { turn(-$2); }
+/^PU/ { penup();   }
+/^PD/ { pendown(); }
 

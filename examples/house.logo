@@ -9,7 +9,7 @@ FD 15
 LT 45
 FD 15
 LT 90
-FD 10
+FD 7
 LT 90
 FD 10
 RT 90
@@ -17,4 +17,23 @@ FD 5
 RT 90
 FD 10
 RT 180
+
+PU
+RT 45
+FD 5
+LT 45
+FD 3
+PD
+
+FD 3
+RT 90
+FD 3
+RT 90
+FD 3
+RT 90
+FD 3
+RT 90
+
+PU
+BK 8
 
