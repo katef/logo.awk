@@ -19,8 +19,8 @@ BEGIN {
 	print "   version='1.1'>"
 	print ""
 
-	print "  <style>path { fill: none; stroke: white; stroke-width: 1; stroke-linecap: butt; }</style>"
-	print "  <style>path.turtle { fill: none; stroke: red; stroke-width: 0.8; }</style>"
+	print "  <style>path { fill: none; stroke: white; stroke-width: 1; stroke-linecap: square; }</style>"
+	print "  <style>path.turtle { fill: none; stroke: red; stroke-width: 0.8; stroke-linejoin: round; }</style>"
 	print ""
 
 	pendown()
