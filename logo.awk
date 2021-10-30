@@ -4,9 +4,6 @@
 
 BEGIN {
 	pi = atan2(0, -1)
-	x = 0.0
-	y = 0.0
-	angle = -90
 
 	print "<?xml version='1.0' encoding='UTF-8' standalone='no'?>"
 	print ""
@@ -23,6 +20,7 @@ BEGIN {
 	print "  <style>path.turtle { fill: none; stroke: red; stroke-width: 0.8; stroke-linejoin: round; }</style>"
 	print ""
 
+	home()
 	pendown()
 }
 
@@ -55,10 +53,17 @@ function pendown() {
 	printf "  <path d='M%d,%d", x, y
 }
 
-/^FD/ { move(+$2); }
-/^BK/ { move(-$2); }
-/^RT/ { turn(+$2); }
-/^LT/ { turn(-$2); }
-/^PU/ { penup();   }
-/^PD/ { pendown(); }
+function home() {
+	x = 0
+	y = 0
+	angle = -90
+}
+
+/^FD/   { move(+$2); }
+/^BK/   { move(-$2); }
+/^RT/   { turn(+$2); }
+/^LT/   { turn(-$2); }
+/^PU/   { penup();   }
+/^PD/   { pendown(); }
+/^HOME/ { home();    }
 
