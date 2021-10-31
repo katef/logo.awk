@@ -1,0 +1,189 @@
+PU
+FD 5
+RT 18
+LT 72 # 54
+PD
+
+# inner pentagon
+FD 10
+RT 36
+LT 90 # start spike
+FD 5
+BK 5
+RT 90 # end spike
+RT 36
+FD 10
+RT 36
+LT 90 # start spike
+FD 5
+BK 5
+RT 90 # end spike
+RT 36
+FD 10
+RT 36
+LT 90 # start spike
+FD 5
+BK 5
+RT 90 # end spike
+RT 36
+FD 10
+RT 36
+LT 90 # start spike
+FD 5
+BK 5
+RT 90 # end spike
+RT 36
+FD 10
+RT 36
+LT 90 # start spike
+FD 5
+
+PU
+PD
+
+HOME
+LT 90
+
+# outer decagon
+# one extra for endcap alignment
+LT 18
+BK 8
+FD 8
+# now for real
+RT 36
+FD 8.3 # i'm not good at trigonometry
+RT 36
+FD 8.3
+RT 36
+FD 8.3
+RT 36
+FD 8.3
+RT 36
+FD 8.3
+RT 36
+FD 8.3
+RT 36
+FD 8.3
+RT 36
+FD 8.3
+RT 36
+FD 8.3
+RT 36
+FD 8.3
+RT 36 # one more for endcap alignment
+FD 8
+
+# left back leg
+PU
+HOME
+LT 90
+LT 18
+RT 36
+FD 5
+LT 45 # legs stick out at 45°
+LT 36
+PD
+FD 5
+RT 72
+FD 5
+RT 72
+FD 5
+RT 72
+FD 3.6
+HOME
+
+# left right leg
+PU
+HOME
+RT 90
+RT 18
+LT 36
+FD 5
+RT 45 # legs stick out at 45°
+RT 36
+PD
+FD 5
+LT 72
+FD 5
+LT 72
+FD 5
+LT 72
+FD 3.6
+HOME
+
+# left front leg
+PU
+HOME
+LT 90
+LT 18
+RT 36
+FD 8.3
+RT 36
+FD 8.3
+RT 36
+FD 8.3
+RT 36
+FD 5
+LT 45 # legs stick out at 45°
+LT 36
+PD
+FD 5
+RT 72
+FD 5
+RT 72
+FD 5
+RT 72
+FD 3.6
+HOME
+
+# right front leg
+PU
+HOME
+RT 90
+RT 18
+LT 36
+FD 8.3
+LT 36
+FD 8.3
+LT 36
+FD 8.3
+LT 36
+FD 5
+RT 45 # legs stick out at 45°
+RT 36
+PD
+FD 5
+LT 72
+FD 5
+LT 72
+FD 5
+LT 72
+FD 3.6
+HOME
+
+# head
+PU
+HOME
+FD 26.5
+RT 90
+FD 2
+LT 90
+RT 18
+PD
+FD 4
+LT 72
+FD 4
+LT 72
+FD 4
+LT 72
+FD 4
+HOME
+
+#
+PU
+BK 15
+#LT 72
+#RT 180
+#FD 5
+
+
