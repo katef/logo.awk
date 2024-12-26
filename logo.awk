@@ -6,6 +6,7 @@ BEGIN {
 	pi = atan2(0, -1)
 	res = 10
 	N = 0
+	r = 0
 
 	print "<?xml version='1.0' encoding='UTF-8' standalone='no'?>"
 	print ""
@@ -64,20 +65,23 @@ function home() {
 function repeat(n) {
 	N = n
 	cmds = ""
+	r = 1 
 }
 
 function endrepeat() {
-	l = split(cmds, cmdarray, "\n")
+	cmd_len = split(cmds, cmdarray, "\n")
 	for (i = 1; i<=N; i++) {
-		for (j = 1; j<=l; j++) {
+		for (j = 1; j<=cmd_len; j++) {
 			act(cmdarray[j], 0);
 		}
 	}
 	N = 0
+	cmds = ""
+	r = 0
 }
 
 function act(input, repeating) {
-split(input, parse)
+l=split(input, parse)
 switch (input) {
 	case /^FD/:
 		(!repeating) ? move(+parse[2]) : cmds = cmds "\n" $0
@@ -100,14 +104,14 @@ switch (input) {
 	case /^HOME/:
 		(!repeating) ? home() : cmds = cmds "\n" $0
 		break
-	case /^\]/:
-		endrepeat()
-		break
 	case /^REPEAT\W+[0-9]*\W*\[/:
 		repeat(+$2)
+		break
+	case /^\]/:
+		endrepeat()
 		break
 }
 }
 
-{ act($0, 1) }
+{ act($0, r) }
 
