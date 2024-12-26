@@ -60,11 +60,51 @@ function home() {
 	angle = -90
 }
 
-/^FD/   { move(+$2); }
-/^BK/   { move(-$2); }
-/^RT/   { turn(+$2); }
-/^LT/   { turn(-$2); }
-/^PU/   { penup();   }
-/^PD/   { pendown(); }
-/^HOME/ { home();    }
+function repeat(n) {
+	N = n
+	cmds = ""
+}
+
+function endrepeat() {
+	l = split(cmds, cmds, "\n")
+	for (i = 1; i<=N; i++) {
+		for (j = 1; j<=l; j++) {
+			act(cmds[j]);
+		}
+	}
+	N = 0
+}
+
+function act(input) {
+switch (input) {
+/^FD/:
+	(N == 0) ? move(+$2) : cmds = cmds "\n" $0
+	break
+/^BK/:
+	move(-$2)
+	break
+/^RT/:
+	turn(+$2)
+	break
+/^LT/:
+	turn(-$2)
+/^PU/:
+	penup()
+	break
+/^PD/:
+	 pendown()
+	break
+/^HOME/:
+	home()
+	break
+/^\]/:
+	endrepeat()
+	break
+/^REPEAT/:
+	repeat(+$2)
+	break
+}
+}
+
+{ act() }
 
