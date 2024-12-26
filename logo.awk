@@ -5,6 +5,7 @@
 BEGIN {
 	pi = atan2(0, -1)
 	res = 10
+	N = 0
 
 	print "<?xml version='1.0' encoding='UTF-8' standalone='no'?>"
 	print ""
@@ -66,45 +67,47 @@ function repeat(n) {
 }
 
 function endrepeat() {
-	l = split(cmds, cmds, "\n")
+	l = split(cmds, cmdarray, "\n")
 	for (i = 1; i<=N; i++) {
 		for (j = 1; j<=l; j++) {
-			act(cmds[j]);
+			act(cmdarray[j], 0);
 		}
 	}
 	N = 0
 }
 
-function act(input) {
+function act(input, repeating) {
+split(input, parse)
 switch (input) {
-/^FD/:
-	(N == 0) ? move(+$2) : cmds = cmds "\n" $0
-	break
-/^BK/:
-	move(-$2)
-	break
-/^RT/:
-	turn(+$2)
-	break
-/^LT/:
-	turn(-$2)
-/^PU/:
-	penup()
-	break
-/^PD/:
-	 pendown()
-	break
-/^HOME/:
-	home()
-	break
-/^\]/:
-	endrepeat()
-	break
-/^REPEAT/:
-	repeat(+$2)
-	break
+	case /^FD/:
+		(!repeating) ? move(+parse[2]) : cmds = cmds "\n" $0
+		break
+	case /^BK/:
+		(!repeating) ? move(-parse[2]) : cmds = cmds "\n" $0
+		break
+	case /^RT/:
+		(!repeating) ? turn(+parse[2]) : cmds = cmds "\n" $0
+		break
+	case /^LT/:
+		(!repeating) ? turn(-parse[2]) : cmds = cmds "\n" $0
+		break
+	case /^PU/:
+		(!repeating) ? penup() : cmds = cmds "\n" $0
+		break
+	case /^PD/:
+		 pen(!repeating) ? down() : cmds = cmds "\n" $0
+		break
+	case /^HOME/:
+		(!repeating) ? home() : cmds = cmds "\n" $0
+		break
+	case /^\]/:
+		endrepeat()
+		break
+	case /^REPEAT\W+[0-9]*\W*\[/:
+		repeat(+$2)
+		break
 }
 }
 
-{ act() }
+{ act($0, 1) }
 
