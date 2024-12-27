@@ -81,35 +81,43 @@ function endrepeat() {
 }
 
 function act(input, repeating) {
+if (repeating) {
+	switch (input) {
+		case /^\]/:
+			endrepeat()
+			break
+		default:
+			cmds = cmds "\n" $0
+	}
+}
+else {
 l=split(input, parse)
 switch (input) {
 	case /^FD/:
-		(!repeating) ? move(+parse[2]) : cmds = cmds "\n" $0
+		move(+parse[2])
 		break
 	case /^BK/:
-		(!repeating) ? move(-parse[2]) : cmds = cmds "\n" $0
+		move(-parse[2])
 		break
 	case /^RT/:
-		(!repeating) ? turn(+parse[2]) : cmds = cmds "\n" $0
+		turn(+parse[2])
 		break
 	case /^LT/:
-		(!repeating) ? turn(-parse[2]) : cmds = cmds "\n" $0
+		turn(-parse[2])
 		break
 	case /^PU/:
-		(!repeating) ? penup() : cmds = cmds "\n" $0
+		penup()
 		break
 	case /^PD/:
-		 pen(!repeating) ? down() : cmds = cmds "\n" $0
+		down()
 		break
 	case /^HOME/:
-		(!repeating) ? home() : cmds = cmds "\n" $0
+		home()
 		break
 	case /^REPEAT\W+[0-9]*\W*\[/:
-		repeat(+$2)
-		break
-	case /^\]/:
-		endrepeat()
-		break
+			repeat(+$2)
+			break
+}
 }
 }
 
