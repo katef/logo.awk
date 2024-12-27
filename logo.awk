@@ -69,13 +69,15 @@ function repeat(n) {
 }
 
 function endrepeat(depth) {
+	# Seemingly this idiom with tmp and then writing into cmdarray is required
+	# and you can't split into a multidimensional array
 	cmd_len[depth] = split(cmds[depth], tmp, "\n")
 	for (key in tmp) {
 		cmdarray[depth,key] = tmp[key]
 	}
-	for (i[depth] = 1; i[depth]<=(+cmdarray[depth, 1]); i[depth]++) {
-		for (j[depth] = 1; j[depth]<=cmd_len[depth]; j[depth]++) {
-			act(cmdarray[depth,j[depth]], depth-1);
+	for (i = 1; i<=(+cmdarray[depth, 1]); i++) {
+		for (j = 1; j<=cmd_len[depth]; j++) {
+			act(cmdarray[depth,j], depth-1);
 		}
 	}
 	d-=1
@@ -87,10 +89,7 @@ function act(input, depth) {
 			case /^\]/:
 				endrepeat(depth)
 				break
-			case /^REPEAT\W+[0-9]*\W*\[/:
-					repeat(+$2)
-					break
-			default:
+						default:
 				cmds[depth] = cmds[depth] "\n" input
 		}
 		return
@@ -119,11 +118,9 @@ function act(input, depth) {
 		case /^HOME/:
 			home()
 			break
-		case /^REPEAT\W+[0-9]*\W*\[/:
-				repeat(+$2)
-				break
 	}
 }
 
+/^REPEAT\W+[0-9]*\W*\[/ { repeat(+$2) }
 { act($0, d) }
 
