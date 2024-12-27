@@ -85,13 +85,10 @@ function endrepeat(depth) {
 
 function act(input, depth) {
 	if (depth) {
-		switch (input) {
-			case /^\]/:
-				endrepeat(depth)
-				break
-						default:
-				cmds[depth] = cmds[depth] "\n" input
-		}
+		if (input ~ /^\]/):
+			endrepeat(depth)
+		else
+			cmds[depth] = cmds[depth] "\n" input
 		return
 	}
 
