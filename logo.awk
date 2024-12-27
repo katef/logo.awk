@@ -6,7 +6,8 @@ BEGIN {
 	pi = atan2(0, -1)
 	res = 10
 	N = 0
-	r = 0
+	d = 0
+	split("", cmdarray)
 
 	print "<?xml version='1.0' encoding='UTF-8' standalone='no'?>"
 	print ""
@@ -63,63 +64,66 @@ function home() {
 }
 
 function repeat(n) {
-	N = n
-	cmds = ""
-	r = 1 
+	d += 1
+	cmds[d] = n
 }
 
-function endrepeat() {
-	cmd_len = split(cmds, cmdarray, "\n")
-	for (i = 1; i<=N; i++) {
-		for (j = 1; j<=cmd_len; j++) {
-			act(cmdarray[j], 0);
+function endrepeat(depth) {
+	cmd_len[depth] = split(cmds[depth], tmp, "\n")
+	for (key in tmp) {
+		cmdarray[depth,key] = tmp[key]
+	}
+	for (i[depth] = 1; i[depth]<=(+cmdarray[depth, 1]); i[depth]++) {
+		for (j[depth] = 1; j[depth]<=cmd_len[depth]; j[depth]++) {
+			act(cmdarray[depth,j[depth]], depth-1);
 		}
 	}
-	N = 0
-	cmds = ""
-	r = 0
+	d-=1
 }
 
-function act(input, repeating) {
-if (repeating) {
+function act(input, depth) {
+	if (depth) {
+		switch (input) {
+			case /^\]/:
+				endrepeat(depth)
+				break
+			case /^REPEAT\W+[0-9]*\W*\[/:
+					repeat(+$2)
+					break
+			default:
+				cmds[depth] = cmds[depth] "\n" input
+		}
+		return
+	}
+
+	l=split(input, parse)
 	switch (input) {
-		case /^\]/:
-			endrepeat()
+		case /^FD/:
+			move(+parse[2])
 			break
-		default:
-			cmds = cmds "\n" $0
+		case /^BK/:
+			move(-parse[2])
+			break
+		case /^RT/:
+			turn(+parse[2])
+			break
+		case /^LT/:
+			turn(-parse[2])
+			break
+		case /^PU/:
+			penup()
+			break
+		case /^PD/:
+			down()
+			break
+		case /^HOME/:
+			home()
+			break
+		case /^REPEAT\W+[0-9]*\W*\[/:
+				repeat(+$2)
+				break
 	}
 }
-else {
-l=split(input, parse)
-switch (input) {
-	case /^FD/:
-		move(+parse[2])
-		break
-	case /^BK/:
-		move(-parse[2])
-		break
-	case /^RT/:
-		turn(+parse[2])
-		break
-	case /^LT/:
-		turn(-parse[2])
-		break
-	case /^PU/:
-		penup()
-		break
-	case /^PD/:
-		down()
-		break
-	case /^HOME/:
-		home()
-		break
-	case /^REPEAT\W+[0-9]*\W*\[/:
-			repeat(+$2)
-			break
-}
-}
-}
 
-{ act($0, r) }
+{ act($0, d) }
 
