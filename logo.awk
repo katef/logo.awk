@@ -4,26 +4,40 @@
 
 BEGIN {
 	pi = atan2(0, -1)
-	res = 10
 	pen = 0
+	glow = 8
+	pad = glow * 2
+
+	# the world is 50 units up, 80 right & left, and 30 down
+	res = 10
+	above = 5 * res
+	below = 3 * res
+	height = above + below
+	width = height * 2
 
 	print "<?xml version='1.0' encoding='UTF-8' standalone='no'?>"
 	print ""
 
 	print "<svg"
 	print "   xmlns='http://www.w3.org/2000/svg'"
-	print "   width='80mm'"
-	print "   height='80mm'"
-	print "   viewBox='-200 -400 500 500'"
+	printf "   viewBox='%d %d %d %d'\n",
+		-width * res / 2 - pad,
+		-above * res - pad,
+		width * res + 2 * pad,
+		height * res + 2 * pad
 	print "   version='1.1'>"
 	print ""
 
+	print "  <style>* { fill: none; stroke: white; stroke-linecap: round; stroke-linejoin: round; }</style>"
 	print "  <style>path { fill: none; stroke: white; stroke-width: 10; stroke-linecap: square; }</style>"
-	print "  <style>path.turtle { fill: none; stroke: red; stroke-linejoin: round; }</style>"
+	print "  <style>path.turtle { fill: none; stroke: red; }</style>"
 	print "  <style>path.pen1 { stroke-width: 8; stroke-opacity: 1; }</style>"
 	print "  <style>path.pen0 { stroke-width: 8; stroke-opacity: 0.3; }</style>"
+	print "  <style>line.major { stroke-width: 1; opacity: 0.8; }</style>"
+	print "  <style>line.minor { stroke-width: 0.8; opacity: 0.1; }</style>"
 	print ""
 
+	grid()
 	home()
 }
 
@@ -70,6 +84,21 @@ function home() {
 	angle = -90
 
 	pendown()
+}
+
+function grid() {
+	for (i = -width; i <= width; i++) {
+		printf "<line class='%s' x1='%d' y1='%d' x2='%d' y2='%d'/>\n",
+			i % res ? "minor" : "major",
+			i * res, -height * res,
+			i * res,  height * res
+	}
+	for (j = -height; j <= height; j++) {
+		printf "<line class='%s' x1='%d' y1='%d' x2='%d' y2='%d'/>\n",
+			j % res ? "minor" : "major",
+			-width * res, j * res,
+			 width * res, j * res
+	}
 }
 
 /^FD/   { move(+$2); }
