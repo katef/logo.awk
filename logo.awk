@@ -77,7 +77,9 @@ function move(n,   r) {
 	x += n * cos(r)
 	y += n * sin(r)
 
-	printf " L%d,%d", x * res, y * res
+	if (pen) {
+		printf " L%d,%d", x * res, y * res
+	}
 }
 
 function turn(n) {
@@ -86,14 +88,14 @@ function turn(n) {
 }
 
 function penup() {
-	if (pen == 1) {
+	if (pen) {
 		print "'/>"
 		pen = 0
 	}
 }
 
 function pendown() {
-	if (pen == 0) {
+	if (!pen) {
 		printf "    <path d='M%d,%d", x * res, y * res
 		pen = 1
 	}
