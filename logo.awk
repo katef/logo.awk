@@ -119,11 +119,11 @@ function grid() {
 	}
 }
 
-/^FD/   { move(+$2); }
-/^BK/   { move(-$2); }
-/^RT/   { turn(+$2); }
-/^LT/   { turn(-$2); }
-/^PU/   { penup();   }
-/^PD/   { pendown(); }
-/^HOME/ { home();    }
+/^FD/   { move(+$2) }
+/^BK/   { move(-$2) }
+/^RT/   { turn(+$2) }
+/^LT/   { turn(-$2) }
+/^PU/   { penup()   }
+/^PD/   { pendown() }
+/^HOME/ { home()    }
 
