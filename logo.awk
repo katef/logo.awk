@@ -29,12 +29,13 @@ BEGIN {
 	print ""
 
 	print "  <style>* { fill: none; stroke: white; stroke-linecap: round; stroke-linejoin: round; }</style>"
-	print "  <style>path { stroke-width: 10; stroke-linecap: square; }</style>"
-	print "  <style>path.turtle { stroke: red; }</style>"
-	print "  <style>path.pen1 { stroke-width: 8; stroke-opacity: 1; }</style>"
-	print "  <style>path.pen0 { stroke-width: 8; stroke-opacity: 0.3; }</style>"
-	print "  <style>line.major { stroke-width: 1; opacity: 0.8; }</style>"
-	print "  <style>line.minor { stroke-width: 0.8; opacity: 0.1; }</style>"
+	print "  <style>path { stroke-width: 12; }</style>"
+	print "  <style>path.turtle { stroke-width: 8; }</style>"
+	print "  <style>g.penup    { stroke-opacity: 0.3; }</style>"
+	print "  <style>g.grid     { opacity: 0.8; }</style>"
+	print "  <style>g.draw     { opacity: 0.8; }</style>"
+	print "  <style>line.major { stroke-width: 1; }</style>"
+	print "  <style>line.minor { stroke-width: 0.8; opacity: 0.125; }</style>"
 	print ""
 
 	# https://stackoverflow.com/questions/9630008/how-can-i-create-a-glow-around-a-rectangle-with-svg
@@ -47,20 +48,24 @@ BEGIN {
 	print "  </filter>"
 	print ""
 
+	print "  <g class='grid'>"
 	grid()
+	print "  </g>"
 
 	# When applying #glow directly to <path> (either by CSS or by an attribute),
 	# paths that are exactly vertical or horizontal disappear. Presumably the glow
 	# (mistakenly?) treats them as zero dimension, despite having a stroke-width set.
 	# My solution is to apply the filter to a containing <g> instead.
-	print "  <g style='filter: url(#glow);'>"
+	print "  <g class='draw' style='filter: url(#glow);'>"
 	home()
 }
 
 END {
 	print "'/>"
-	printf "    <g transform='translate(%d,%d) rotate(%d)'>\n", x * res, y * res, angle
-	printf "      <path class='turtle pen%d' d='M2,0 L-60,20 -40,0 -60,-20 Z'/>\n", pen
+	printf "    <g class='%s' transform='translate(%d,%d) rotate(%d)'>\n",
+		pen ? "pendown" : "penup",
+		x * res, y * res, angle
+	print "      <path class='turtle' d='M2,0 L-60,20 -40,0 -60,-20 Z'/>"
 	print "    </g>"
 
 	print "  </g>"
@@ -106,13 +111,13 @@ function home() {
 
 function grid() {
 	for (i = -width; i <= width; i++) {
-		printf "<line class='%s' x1='%d' y1='%d' x2='%d' y2='%d'/>\n",
+		printf "    <line class='%s' x1='%d' y1='%d' x2='%d' y2='%d'/>\n",
 			i % res ? "minor" : "major",
 			i * res, -height * res,
 			i * res,  height * res
 	}
 	for (j = -height; j <= height; j++) {
-		printf "<line class='%s' x1='%d' y1='%d' x2='%d' y2='%d'/>\n",
+		printf "    <line class='%s' x1='%d' y1='%d' x2='%d' y2='%d'/>\n",
 			j % res ? "minor" : "major",
 			-width * res, j * res,
 			 width * res, j * res
